@@ -2,6 +2,10 @@
 
 from utils.file_utils import load_jsonl
 
+import sklearn
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import f1_score
+
 def evaluate_standard(gt_labels, pred_labels):
     
     accuracy, f1score = 0, 0
@@ -13,7 +17,9 @@ def evaluate_standard(gt_labels, pred_labels):
     # scikit-learn APIs in way they can deal with strings 
     # as label. Remeber to import the functions you use!
 
-        
+    accuracy = sklearn.metrics.accuracy_score(gt_labels, pred_labels)
+    #f1score = sklearn.metrics.f1_score(gt_labels, pred_labels,average='weighted')
+    f1score = sklearn.metrics.f1_score(gt_labels, pred_labels,pos_label ='SUPPORTS')
 
     # End of TODO.
     ##################################################
