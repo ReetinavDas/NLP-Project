@@ -45,9 +45,8 @@ def batch_prompt(model, tokenizer, annotations_filepath, output_filepath, prompt
         ##################################################
 
         for output_text in output_texts:
-            final_response = output_text.split("Output:")[-1].split("<|endoftext|>")[0]
-            tmp_response = final_response.lower()
-            if "refutes" in tmp_response or "false" in tmp_response:
+            final_response = output_text.split("Output:")[-1].split("<|endoftext|>")[0].strip()
+            if final_response.startswith("REF"):
                 predicted_label = "REFUTES"
             else:
                 predicted_label = "SUPPORTS"

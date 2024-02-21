@@ -39,7 +39,7 @@ class PhiPromptDataset(Dataset):
         sample = self.data[idx]
 
         if self.prompt_type == 'zero_eval':
-            prompt = PHI_ZERO_SHOT_EVAL_PROMPT.format(claim=sample['claim'], task_type=sample['task_type'])
+            prompt = PHI_ZERO_SHOT_EVAL_PROMPT.format(claim=sample['claim'], task_type=sample['task_type'], language_generated=sample['language_generated'], domain=sample['domain'])
         elif self.prompt_type == 'few_eval':
             prompt = PHI_FEW_SHOT_EVAL_PROMPT.format(examples=examples, claim=sample['claim'], task_type=sample['task_type'])
         elif self.prompt_type == 'zero_evidence':
