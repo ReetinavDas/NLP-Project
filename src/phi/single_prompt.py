@@ -25,6 +25,9 @@ def single_prompt(model, tokenizer, prompt):
 
     # End of TODO.
     #############################################################
+    inputs = tokenizer(prompt, padding=True, return_tensors='pt').to("cuda")
+    output = model.generate(**inputs, pad_token_id=tokenizer.eos_token_id)
+    text = tokenizer.decode(output[0], skip_special_tokens=True)
     print("Model Response: ", text)
 
 def main(args):

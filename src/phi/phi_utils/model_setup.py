@@ -41,11 +41,10 @@ def model_and_tokenizer_setup(model_id_or_path):
 
     # Load model
     #model = AutoModelForCausalLM.from_pretrained(model_id_or_path, padding="max_length", padding_side="left", torch_dtype=torch.float16, attn_implementation="flash_attention_2", trust_remote_code=True)
-    model = AutoModelForCausalLM.from_pretrained(model_id_or_path, torch_dtype=torch.float16, attn_implementation="flash_attention_2", trust_remote_code=True)
+    model = AutoModelForCausalLM.from_pretrained(model_id_or_path, torch_dtype=torch.float16, trust_remote_code=True).to("cuda")
 
     # Load tokenizer
     #tokenizer = AutoTokenizer.from_pretrained(model_id_or_path, padding='longest', pad_to_multiple_of=8, pad_token=tokenizer.eos_token, trust_remote_code=True)
     tokenizer = AutoTokenizer.from_pretrained(model_id_or_path, padding="max_length", padding_side="left", pad_token="<|endoftext|>", trust_remote_code=True)
-    # get_model_info(model)
 
     return model, tokenizer

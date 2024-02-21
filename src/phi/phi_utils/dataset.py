@@ -36,6 +36,16 @@ class PhiPromptDataset(Dataset):
         
         # End of TODO.
         ##################################################
+        sample = self.data[idx]
+
+        if self.prompt_type == 'zero_eval':
+            prompt = PHI_ZERO_SHOT_EVAL_PROMPT.format(claim=sample['claim'], task_type=sample['task_type'])
+        elif self.prompt_type == 'few_eval':
+            prompt = PHI_FEW_SHOT_EVAL_PROMPT.format(examples=examples, claim=sample['claim'], task_type=sample['task_type'])
+        elif self.prompt_type == 'zero_evidence':
+            prompt = PHI_ZERO_SHOT_EVIDENCE_PROMPT.format(claim=sample['claim'], information=sample['information'])
+        elif self.prompt_type == 'zero_evidence_eval':
+            prompt = PHI_ZERO_SHOT_EVIDENCE_EVAL_PROMPT.format(claim=sample['claim'], evidence=sample['evidence'], task_type=sample['task_type'])
         
         return prompt
     

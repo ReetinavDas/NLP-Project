@@ -1,7 +1,7 @@
 # TODO - import relevant sklearn score modules 
 
 from utils.file_utils import load_jsonl
-
+import argparse
 import sklearn
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
@@ -30,11 +30,22 @@ def model_eval_report(gt_filepath, pred_filepath):
     
     gt_data = load_jsonl(gt_filepath)
     gt_labels = [d["label"] for d in gt_data]
-    pred_data = load_jsonl(pred_filepath)
-    pred_labels = [d["label"] for d in pred_data]
-    
+    with open(pred_filepath, "r") as f:
+        pred_labels = [d.strip() for d in f.readlines()]
     accuracy, f1score = evaluate_standard(gt_labels, 
                                           pred_labels)
 
     print(f"Overall Accuracy : {accuracy}")
     print(f"Overall F1 score : {f1score}")
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--gt_filepath', type=str, required=True)
+    parser.add_argument('--pred_filepath', type=str, required=True)
+
+    args = parser.parse_args()
+    return args 
+
+if __name__ == "__main__":
+    args = parse_args()
+    model_eval_report(args.gt_filepath, args.pred_filepath)
