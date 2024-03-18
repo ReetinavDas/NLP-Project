@@ -26,7 +26,7 @@ def batch_prompt(model, tokenizer, annotations_filepath, output_filepath, prompt
     
     prompt_dataset = PhiPromptDataset(annotations_filepath, prompt_type, evidence_filepath=evidence_filepath)
     prompt_dataloader = DataLoader(prompt_dataset, batch_size=batch_size, shuffle=False)
-
+    
     output_data = []
     for batch in tqdm(prompt_dataloader):
         output_texts = []
@@ -43,7 +43,7 @@ def batch_prompt(model, tokenizer, annotations_filepath, output_filepath, prompt
         output_texts = [tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
         # End of TODO.
         ##################################################
-
+        print("Print the evidence outputs", output_texts)
         for output_text in output_texts:
             final_response = output_text.split("Output:")[-1].split("<|endoftext|>")[0].strip()
             if final_response.startswith("REF"):
@@ -55,8 +55,23 @@ def batch_prompt(model, tokenizer, annotations_filepath, output_filepath, prompt
                 "final_response":final_response,
                 "label":predicted_label
                 })
+            #output_data.append({"evidence":output_text.split("Output:")[-1].strip})
+            print("EVIDENCE HERE", output_texts)
 
     dump_jsonl(output_data, output_filepath)
+
+# This is used to create evidence in zero_evidence
+"""
+        for output_text in output_texts:
+            final_response = output_text.split("Output:")[-1].split("<|endoftext|>")[0].strip()
+
+            output_data.append({
+                "evidence_sample":final_response,
+                })
+            print("EVIDENCE HERE", output_texts)
+
+    dump_jsonl(output_data, output_filepath)
+"""
 
 def main(args):
     model, tokenizer = model_and_tokenizer_setup(args.model_id_or_path)
